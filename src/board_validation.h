@@ -1,5 +1,9 @@
 #ifndef board_validation_h
 #define board_validetion_h
+int isboardletter(char c);
+
+int isboarddigit(char c);
+
 int iswhite(char c);
 
 int isblack(char c);

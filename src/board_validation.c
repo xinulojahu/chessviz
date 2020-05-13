@@ -1,3 +1,18 @@
+int isboardletter(char c)
+{
+    if ((c >= 'a') && (c <= 'h')) {
+        return 1;
+    }
+    return 0;
+}
+
+int isboarddigit(char c)
+{
+    if ((c >= '1') && (c <= '8')) {
+        return 1;
+    }
+    return 0;
+}
 
 int iswhite(char c)
 {
