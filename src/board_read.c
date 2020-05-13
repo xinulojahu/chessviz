@@ -2,18 +2,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ERROR(LINE, SYM, TEXT, C) printf("%d:%d %s: %c\n", LINE, SYM, TEXT, C);
+#define ERROR(LINE, SYM, TEXT, C)                 \
+    printf("%d:%d %s: %c\n", LINE, SYM, TEXT, C); \
+    exit(-1);
+
+#define GET(C)     \
+    c = getchar(); \
+    sym++;
+
+int line = 0, sym = 0;
 
 char board_read_turn(char board[8][8], int color_type)
 {
     char c, figure;
     signed char x1, y1, x2, y2, turn_type;
     //Тип фигуры, выполняющей ход;
-    c = getchar();
+    GET(c);
     figure = ' ';
     if (ischessman(c)) {
         figure = c;
-        c = getchar();
+        GET(c);
     }
 
     //Буква поля с которого сделан ход
@@ -21,13 +29,13 @@ char board_read_turn(char board[8][8], int color_type)
         x1 = c - 'a';
     }
     //Цифра поля с которого сделан ход
-    c = getchar();
+    GET(c);
     if ((c >= '1') && (c <= '8')) {
         y1 = c - '1';
     }
 
     //Тип хода
-    c = getchar();
+    GET(c);
     switch (c) {
     case '-':
         turn_type = 0;
@@ -38,36 +46,36 @@ char board_read_turn(char board[8][8], int color_type)
     }
 
     //Буква поля куда сделан ход
-    c = getchar();
+    GET(c);
     if ((c >= 'a') && (c <= 'h')) {
         x2 = c - 'a';
     }
 
     //Цифра поля куда сделан ход
-    c = getchar();
+    GET(c);
     if ((c >= '1') && (c <= '8')) {
         y2 = c - '1';
     }
 
     //Проверка на взятие на проходе
-    c = getchar();
+    GET(c);
     if (c == 'e') {
-        c = getchar();
+        GET(c);
         if (c != '.') {
             printf("Неизвестный символ: %c\n", c);
             exit(-1);
         }
-        c = getchar();
+        GET(c);
         if (c != 'p') {
             printf("Неизвестный символ: %c\n", c);
             exit(-1);
         }
-        c = getchar();
+        GET(c);
         if (c != '.') {
             printf("Неизвестный символ: %c\n", c);
             exit(-1);
         }
-        c = getchar();
+        GET(c);
     }
 
     //Перемещение фигуры
