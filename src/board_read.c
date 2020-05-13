@@ -19,7 +19,7 @@ char board_read_turn(char board[8][8], int color_type)
     //Тип фигуры, выполняющей ход;
     GET(c);
     figure = ' ';
-    if (ischessman(c)) {
+    if (iswhite(c)) {
         figure = c;
         GET(c);
     }
@@ -40,11 +40,19 @@ char board_read_turn(char board[8][8], int color_type)
     }
 
     //Существет ли фигура на поле
-
     if (!ischessman(board[y1][x1])) {
         ERROR(sym, "На указанном поле нет фигур.");
     }
 
+    if (color_type == 0) {
+        if (isblack(board[y1][x1])) {
+            ERROR(sym, "На указанном поле черная фигура пока идет ход белых.");
+        }
+    } else {
+        if (iswhite(board[y1][x1])) {
+            ERROR(sym, "На указанном поле белая фигура пока идет ход черных.");
+        }
+    }
     //Соответсвуют ли указанная фигура и фигура на указанном поле
     if (figure != ' ') {
         if (figure != board[y1][x1]) {
@@ -69,12 +77,16 @@ char board_read_turn(char board[8][8], int color_type)
     GET(c);
     if (isboardletter(c)) {
         x2 = c - 'a';
+    } else {
+        ERROR(sym, "Некорректная буква поля.");
     }
 
     //Цифра поля куда сделан ход
     GET(c);
     if (isboarddigit(c)) {
         y2 = c - '1';
+    } else {
+        ERROR(sym, "Некорректная цифра поля.");
     }
 
     //Проверка на взятие на проходе
@@ -82,18 +94,15 @@ char board_read_turn(char board[8][8], int color_type)
     if (c == 'e') {
         GET(c);
         if (c != '.') {
-            printf("Неизвестный символ: %c\n", c);
-            exit(-1);
+            ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
         GET(c);
         if (c != 'p') {
-            printf("Неизвестный символ: %c\n", c);
-            exit(-1);
+            ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
         GET(c);
         if (c != '.') {
-            printf("Неизвестный символ: %c\n", c);
-            exit(-1);
+            ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
         GET(c);
     }
@@ -107,5 +116,22 @@ char board_read_turn(char board[8][8], int color_type)
 
 void board_read(char board[8][8])
 {
-    board_read_turn(board, 0);
+    char c;
+    do {
+        c = board_read_turn(board, 0);
+        if (c == '\n') {
+            ERROR(sym, "Символ новой строки в некорректном месте.");
+        }
+        if (c == '#') {
+            return;
+        }
+        c = board_read_turn(board, 1);
+        if (c == '\n') {
+            line++;
+            sym = 0;
+        }
+        if (c == '#') {
+            return;
+        }
+    } while (c != '\0');
 }
