@@ -12,6 +12,13 @@
 
 int line = 1, sym = 0;
 
+char board_toupper(char c)
+{
+    if ((c >= 'a') && (c <= 'z')) {
+        c += 'A' - 'a';
+    }
+    return c;
+}
 char board_read_turn(char board[8][8], int color_type)
 {
     char c, figure;
@@ -46,16 +53,20 @@ char board_read_turn(char board[8][8], int color_type)
 
     if (color_type == 0) {
         if (isblack(board[y1][x1])) {
-            ERROR(sym, "На указанном поле черная фигура пока идет ход белых.");
+            ERROR(sym,
+                  "На указанном поле черная фигура пока идет ход "
+                  "белых.");
         }
     } else {
         if (iswhite(board[y1][x1])) {
-            ERROR(sym, "На указанном поле белая фигура пока идет ход черных.");
+            ERROR(sym,
+                  "На указанном поле белая фигура пока идет ход "
+                  "черных.");
         }
     }
     //Соответсвуют ли указанная фигура и фигура на указанном поле
     if (figure != ' ') {
-        if (figure != board[y1][x1]) {
+        if (figure != board_toupper(board[y1][x1])) {
             ERROR(sym - 2, "Указанная и существующая фигуры отличаются.")
         }
     }
