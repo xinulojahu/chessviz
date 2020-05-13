@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ERROR(TEXT)                               \
-    printf("%d:%d %s: %c\n", line, sym, TEXT, c); \
+#define ERROR(SYM, TEXT)                   \
+    printf("%d:%d %s\n", line, SYM, TEXT); \
     exit(-1);
 
 #define GET(C)     \
     c = getchar(); \
     sym++;
 
-int line = 0, sym = 0;
+int line = 1, sym = 0;
 
 char board_read_turn(char board[8][8], int color_type)
 {
@@ -27,11 +27,29 @@ char board_read_turn(char board[8][8], int color_type)
     //Буква поля с которого сделан ход
     if (isboardletter(c)) {
         x1 = c - 'a';
+    } else {
+        ERROR(sym, "Некорректная буква поля.");
     }
+
     //Цифра поля с которого сделан ход
     GET(c);
     if (isboarddigit(c)) {
         y1 = c - '1';
+    } else {
+        ERROR(sym, "Некорректная цифра поля.");
+    }
+
+    //Существет ли фигура на поле
+
+    if (!ischessman(board[y1][x1])) {
+        ERROR(sym, "На указанном поле нет фигур.");
+    }
+
+    //Соответсвуют ли указанная фигура и фигура на указанном поле
+    if (figure != ' ') {
+        if (figure != board[y1][x1]) {
+            ERROR(sym - 2, "Указанная и существующая фигуры отличаются.")
+        }
     }
 
     //Тип хода
@@ -43,6 +61,8 @@ char board_read_turn(char board[8][8], int color_type)
     case 'x':
         turn_type = 1;
         break;
+    defoult:
+        ERROR(sym, "Некорректный тип хода.");
     }
 
     //Буква поля куда сделан ход
