@@ -1,3 +1,6 @@
+#include "board_validation.h"
+#include <stdio.h>
+
 void board_read(char board[8][8])
 {
     char c, figure;
@@ -52,6 +55,6 @@ void board_read(char board[8][8])
         //Перемещение фигуры
         board[y2][x2] = board[y1][x1];
         board[y1][x1] = ' ';
-    } while (0 /*c != '\0'*/);
+    } while (0); // c != '\0');
 }
 

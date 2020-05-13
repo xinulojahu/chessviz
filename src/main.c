@@ -1,3 +1,7 @@
+#include "board.h"
+#include "board_print_plain.h"
+#include "board_read.h"
+
 int main()
 {
     char board[8][8];
