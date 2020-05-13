@@ -25,12 +25,12 @@ char board_read_turn(char board[8][8], int color_type)
     }
 
     //Буква поля с которого сделан ход
-    if ((c >= 'a') && (c <= 'h')) {
+    if (isboardletter(c)) {
         x1 = c - 'a';
     }
     //Цифра поля с которого сделан ход
     GET(c);
-    if ((c >= '1') && (c <= '8')) {
+    if (isboarddigit(c)) {
         y1 = c - '1';
     }
 
@@ -47,13 +47,13 @@ char board_read_turn(char board[8][8], int color_type)
 
     //Буква поля куда сделан ход
     GET(c);
-    if ((c >= 'a') && (c <= 'h')) {
+    if (isboardletter(c)) {
         x2 = c - 'a';
     }
 
     //Цифра поля куда сделан ход
     GET(c);
-    if ((c >= '1') && (c <= '8')) {
+    if (isboarddigit(c)) {
         y2 = c - '1';
     }
 
