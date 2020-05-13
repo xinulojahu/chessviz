@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define ERROR(LINE, SYM, TEXT, C) printf("%d:%d %s: %c\n", LINE, SYM, TEXT, C);
+
 char board_read_turn(char board[8][8], int color_type)
 {
     char c, figure;
