@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ERROR(LINE, SYM, TEXT, C)                 \
-    printf("%d:%d %s: %c\n", LINE, SYM, TEXT, C); \
+#define ERROR(TEXT)                               \
+    printf("%d:%d %s: %c\n", line, sym, TEXT, c); \
     exit(-1);
 
 #define GET(C)     \
