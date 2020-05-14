@@ -11,4 +11,3 @@ int main()
     board_print_plain(board);
     return 0;
 }
-

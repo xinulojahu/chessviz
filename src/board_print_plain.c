@@ -15,4 +15,3 @@ void board_print_plain(char board[8][8])
     }
     printf("\n");
 }
-
