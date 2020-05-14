@@ -89,7 +89,7 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
     case 'x':
         turn->turn_type = 1;
         break;
-    defoult:
+    default:
         ERROR(sym, "Некорректный тип хода.");
     }
 
