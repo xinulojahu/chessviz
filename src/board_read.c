@@ -119,11 +119,12 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
             ERROR(sym, "На указанном поле нет фигур соперника");
         }
     } else if (ischessman(board[turn->y2][turn->x2])) {
-        ERROR(sym - 2, "На указаннам поле есть фигура соперника");
+        ERROR(sym, "На указаннам поле есть фигура соперника");
     }
 
     //Проверка на взятие на проходе
     GET(c);
+    turn->eg = 0;
     if (c == 'e') {
         GET(c);
         if (c != '.') {
@@ -138,21 +139,72 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
             ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
         GET(c);
+        turn->eg = 1;
     }
-
-    //Перемещение фигуры
-    board[turn->y2][turn->x2] = board[turn->y1][turn->x1];
-    board[turn->y1][turn->x1] = ' ';
 
     return c;
 }
 
+unsigned int board_abs(int d)
+{
+    if (d < 0) {
+        return -d;
+    }
+    return d;
+}
+
+void board_chess_moving(char board[8][8], board_turn turn)
+{
+    board[turn.y2][turn.x2] = board[turn.y1][turn.x1];
+    board[turn.y1][turn.x1] = ' ';
+}
+
+void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
+{
+    //Если пешка
+    if (turn.figure == 'P') {
+        // если ход на сруб
+        if (turn.turn_type == 1) {
+            if ((board_abs(turn.y2 - turn.y1) == 1)
+                && (board_abs(turn.x2 - turn.x1) == 1)) {
+                board_chess_moving(board, turn);
+                return;
+            }
+            //Если ход не на сруб, то пешка идет по прямой
+        } else if (turn.x1 == turn.x2) {
+            //Если ход белых
+            if (color_type == 0) {
+                if (turn.y1 == 1) {
+                    if (turn.y2 == 3) {
+                        board_chess_moving(board, turn);
+                        return;
+                    }
+                }
+                //Если ход черных
+            } else {
+                if (turn.y1 == 6) {
+                    if (turn.y2 == 4) {
+                        board_chess_moving(board, turn);
+                        return;
+                    }
+                }
+            }
+            if (board_abs(turn.y2 - turn.y1) == 1) {
+                board_chess_moving(board, turn);
+                return;
+            }
+        }
+        //Если return не случился, значит некорректные данные
+        ERROR(sym, "Некорректное конечное поле");
+    }
+}
 void board_read(char board[8][8])
 {
     char c;
     board_turn turn;
     do {
         c = board_read_turn(board, &turn, 0);
+        board_chessman_logic(board, turn, 0);
         if (c == '\n') {
             ERROR(sym, "Символ новой строки в некорректном месте.");
         }
@@ -160,6 +212,7 @@ void board_read(char board[8][8])
             return;
         }
         c = board_read_turn(board, &turn, 1);
+        board_chessman_logic(board, turn, 1);
         if (c == '\n') {
             line++;
             sym = 0;
