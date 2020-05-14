@@ -30,7 +30,7 @@ char board_toupper(char c)
     }
     return c;
 }
-char board_read_turn(char board[8][8], board_turn *turn, int color_type)
+char board_read_turn(char board[8][8], board_turn* turn, int color_type)
 {
     char c;
     //Тип фигуры, выполняющей ход;
@@ -96,7 +96,7 @@ char board_read_turn(char board[8][8], board_turn *turn, int color_type)
     //Буква поля куда сделан ход
     GET(c);
     if (isboardletter(c)) {
-        turn->x2 = c-'a';
+        turn->x2 = c - 'a';
     } else {
         ERROR(sym, "Некорректная буква поля.");
     }
