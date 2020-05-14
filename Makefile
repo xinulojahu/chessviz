@@ -2,7 +2,7 @@
 CC=gcc
 
 # флаги
-CFLAGS=-c 
+CFLAGS=-c -Wall -Werror 
 
 # путь до объектных файлов
 OBJDIR=builder/
