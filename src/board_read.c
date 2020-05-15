@@ -160,6 +160,29 @@ void board_chess_moving(char board[8][8], board_turn turn)
     board[turn.y1][turn.x1] = ' ';
 }
 
+int board_on_way_check(char board[8][8], board_turn turn)
+{
+    int xstep = turn.x2 - turn.x1;
+    int ystep = turn.y2 - turn.y1;
+    int dif;
+    if (xstep != 0) {
+        dif = board_abs(xstep);
+        xstep /= dif;
+    }
+    if (ystep != 0) {
+        dif = board_abs(ystep);
+        ystep /= dif;
+    }
+
+    for (int i = 1; i < dif; i++) {
+        printf("%d, %d", turn.x2 + xstep * i, turn.y2 + ystep * i);
+        if (ischessman(board[turn.y2 + ystep * i][turn.x2 + xstep * i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
 {
     unsigned int ydif = board_abs(turn.y2 - turn.y1);
