@@ -5,17 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Ошибка
-#define ERROR(SYM, TEXT)                   \
-    printf("%d:%d %s\n", line, SYM, TEXT); \
-    exit(-1);
-
-//Следующий символ строки
-#define NEXT(C)  \
-    C = *ptrstr; \
-    ptrstr++;    \
-    sym++;
-
 //Для ошибок
 int line = 1, sym = 0;
 

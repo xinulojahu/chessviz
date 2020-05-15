@@ -1,5 +1,16 @@
 #ifndef board_read_h
 #define board_read_h
+//Ошибка
+#define ERROR(SYM, TEXT)                   \
+    printf("%d:%d %s\n", line, SYM, TEXT); \
+    exit(-1);
+
+//Следующий символ строки
+#define NEXT(C)  \
+    C = *ptrstr; \
+    ptrstr++;    \
+    sym++;
+
 int board_read(char board[8][8]);
 
 //структура для хранения хода в цифрах
