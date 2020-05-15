@@ -115,7 +115,33 @@ CTEST(P_movement, taking)
     board_chess_moving(board, turn);
     board_check_turn(board, &turn, "e6xd7", 0);
     int result = board_chessman_logic(board, turn, 0);
-    board_init(board);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(K_movement, correct)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "e1-e2", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_chess_moving(board, turn);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(K_movement, correct_diag)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "e2-d3", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(K_movement, incorrect)
+{
+    int expected = -1;
+    board_check_turn(board, &turn, "e2-e4", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_check_turn(board, &turn, "e2-e1", 0);
+    board_chess_moving(board, turn);
     ASSERT_EQUAL(expected, result);
 }
 
