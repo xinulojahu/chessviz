@@ -1,3 +1,4 @@
+#include "board_print_plain.h"
 #include "board_validation.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -180,6 +181,10 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
                         return;
                     }
                 }
+                if (turn.y2 - turn.y1 == 1) {
+                    board_chess_moving(board, turn);
+                    return;
+                }
                 //Если ход черных
             } else {
                 if (turn.y1 == 6) {
@@ -188,10 +193,10 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
                         return;
                     }
                 }
-            }
-            if (board_abs(turn.y2 - turn.y1) == 1) {
-                board_chess_moving(board, turn);
-                return;
+                if (turn.y2 - turn.y1 == -1) {
+                    board_chess_moving(board, turn);
+                    return;
+                }
             }
         }
         //Если return не случился, значит некорректные данные
@@ -220,5 +225,6 @@ void board_read(char board[8][8])
         if (c == '#') {
             return;
         }
+        board_print_plain(board);
     } while (c != '\0');
 }
