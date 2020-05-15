@@ -3,8 +3,8 @@
 #include <stdio.h>
 //Ошибка
 int line, sym;
-#define ERROR(SYM, TEXT)                   \
-    printf("%d:%d %s\n", line, SYM, TEXT); \
+#define ERROR(SYM, TEXT)                     \
+    printf("\n%d:%d %s\n", line, SYM, TEXT); \
     return -1;
 
 //Следующий символ строки
