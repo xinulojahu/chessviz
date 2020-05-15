@@ -7,8 +7,9 @@
     printf("%d:%d %s\n", line, SYM, TEXT); \
     exit(-1);
 
-#define GET(C)     \
-    c = getchar(); \
+#define NEXT(C)  \
+    C = *ptrstr; \
+    ptrstr++;    \
     sym++;
 
 int line = 1, sym = 0;
@@ -31,15 +32,17 @@ char board_toupper(char c)
     }
     return c;
 }
-char board_read_turn(char board[8][8], board_turn* turn, int color_type)
+int board_read_turn(
+        char board[8][8], board_turn* turn, char* string, int color_type)
 {
     char c;
+    char* ptrstr = string;
     //Тип фигуры, выполняющей ход;
-    GET(c);
+    NEXT(c);
     turn->figure = ' ';
     if (iswhite(c)) {
         turn->figure = c;
-        GET(c);
+        NEXT(c);
     }
 
     //Буква поля с которого сделан ход
@@ -50,7 +53,7 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
     }
 
     //Цифра поля с которого сделан ход
-    GET(c);
+    NEXT(c);
     if (isboarddigit(c)) {
         turn->y1 = c - '1';
     } else {
@@ -82,7 +85,7 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
     }
 
     //Тип хода
-    GET(c);
+    NEXT(c);
     switch (c) {
     case '-':
         turn->turn_type = 0;
@@ -95,7 +98,7 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
     }
 
     //Буква поля куда сделан ход
-    GET(c);
+    NEXT(c);
     if (isboardletter(c)) {
         turn->x2 = c - 'a';
     } else {
@@ -103,7 +106,7 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
     }
 
     //Цифра поля куда сделан ход
-    GET(c);
+    NEXT(c);
     if (isboarddigit(c)) {
         turn->y2 = c - '1';
     } else {
@@ -124,26 +127,26 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
     }
 
     //Проверка на взятие на проходе
-    GET(c);
+    NEXT(c);
     turn->eg = 0;
     if (c == 'e') {
-        GET(c);
+        NEXT(c);
         if (c != '.') {
             ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
-        GET(c);
+        NEXT(c);
         if (c != 'p') {
             ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
-        GET(c);
+        NEXT(c);
         if (c != '.') {
             ERROR(sym, "Некорректно обозначено взятие на проходе.");
         }
-        GET(c);
+        NEXT(c);
         turn->eg = 1;
     }
 
-    return c;
+    return 0;
 }
 
 unsigned int board_abs(int d)
@@ -274,28 +277,45 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     //Если return не случился, значит некорректные данные
     ERROR(sym, "Некорректное конечное поле.");
 }
-void board_read(char board[8][8])
+
+int board_get_turn(char* string)
 {
-    char c;
+    int i = 0;
+    do {
+        string[i++] = getchar();
+        printf("1 %c 1\n", string[i - 1]);
+    } while ((string[i - 1] != ' ') && (string[i - 1] != '\n')
+             && (string[i - 1] != '\0'));
+    string[i] = '\0';
+    return i;
+}
+int board_read(char board[8][8])
+{
+    char string[12];
+    int stringlen;
     board_turn turn;
     do {
-        c = board_read_turn(board, &turn, 0);
+        stringlen = board_get_turn(string);
+        board_read_turn(board, &turn, string, 0);
         board_chessman_logic(board, turn, 0);
-        if (c == '\n') {
+        if (string[stringlen - 2] == '#') {
+            return 0;
+        }
+        if (string[stringlen - 1] == '\n') {
             ERROR(sym, "Символ новой строки в некорректном месте.");
         }
-        if (c == '#') {
-            return;
-        }
-        c = board_read_turn(board, &turn, 1);
+        stringlen = board_get_turn(string);
+        board_read_turn(board, &turn, string, 1);
         board_chessman_logic(board, turn, 1);
-        if (c == '\n') {
+        if (string[stringlen - 2] == '#') {
+            return 0;
+        }
+        if (string[stringlen - 1] == '\n') {
             line++;
             sym = 0;
-        }
-        if (c == '#') {
-            return;
+        } else {
+            ERROR(sym, "Отсутствует символ новой строки после хода черных.");
         }
         board_print_plain(board);
-    } while (c != '\0');
+    } while (1);
 }
