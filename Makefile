@@ -3,34 +3,48 @@ CC=gcc
 
 # флаги
 CFLAGS=-c -Wall -Werror 
-
+TFLAGS=-I thirdparty -I src
 # путь до объектных файлов
 OBJDIR=builder/
-
 # путь до исходников
 SRCDIR=src/
+# путь до тестов
+TSTDIR=test/
 
-# файлы исходников
-FILES=board.c board_print_plain.c board_read.c board_validation.c main.c
+# общие файлы
+FILES=board.c board_print_plain.c board_read.c board_validation.c
+# одинаковые наименования
+SMFLS=main.c
+# только в тестах
+TTFLS=board_test.c
 
-# исходники
-SRC=$(patsubst %.c, $(SRCDIR)%.c, $(FILES))
-
-# объектные файлы
-OBJ=$(patsubst %.c, $(OBJDIR)%.o, $(FILES))
+# объектные файлы приложения
+OBJ=$(patsubst %.c, $(OBJDIR)$(SRCDIR)%.o, $(FILES) $(SMFLS))
+# объектные файлы тестов
+TTOBJ=$(patsubst %.c, $(OBJDIR)$(TSTDIR)%.o, $(FILES) $(SMFLS) $(TTFLS))
 
 # выходной файл
 EXECUTABLE=bin/chessviz
+TTEXE=bin/chesstest
 
 .PHONY: clean
 
-all: $(EXECUTABLE)
+all: $(EXECUTABLE) $(TTEXE)
  
 $(EXECUTABLE): $(OBJ)
 	$(CC) -o $@ $^
 
-$(OBJDIR)%.o: $(SRCDIR)%.c
+$(OBJDIR)$(SRCDIR)%.o: $(SRCDIR)%.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(TTEXE): $(TTOBJ)
+	$(CC) -o $@ $^
+
+$(OBJDIR)$(TSTDIR)%.o: $(TSTDIR)%.c
+	$(CC) $(CFLAGS) -o $@ $^ $(TFLAGS)
+
+$(OBJDIR)$(TSTDIR)%.o: $(SRCDIR)%.c
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean: 
-	$(RM) $(OBJ) $(EXECUTABLE)
+	$(RM) $(OBJ) $(TTOBJ) $(EXECUTABLE) $(TTEXE)
