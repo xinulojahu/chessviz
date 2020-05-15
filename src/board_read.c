@@ -202,6 +202,15 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         //Если return не случился, значит некорректные данные
         ERROR(sym, "Некорректное конечное поле");
     }
+    if (turn.figure == 'K') {
+        if (board_abs(turn.x1 - turn.x2) <= 1) {
+            if (board_abs(turn.y1 - turn.y2) <= 1) {
+                board_chess_moving(board, turn);
+                return;
+            }
+        }
+        ERROR(sym, "Некорректное конечное поле");
+    }
 }
 void board_read(char board[8][8])
 {
