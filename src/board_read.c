@@ -246,6 +246,16 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             }
         }
     }
+    if (turn.figure == 'R') {
+        if ((xdif == 0) || (ydif == 0)) {
+            if (board_on_way_check(board, turn)) {
+                board_chess_moving(board, turn);
+                return;
+            } else {
+                ERROR(sym, "Ладья не может ходить через фигуры.");
+            }
+        }
+    }
     //Если return не случился, значит некорректные данные
     ERROR(sym, "Некорректное конечное поле.");
 }
