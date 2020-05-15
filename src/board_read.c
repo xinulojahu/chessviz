@@ -162,17 +162,18 @@ void board_chess_moving(char board[8][8], board_turn turn)
 
 void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
 {
+    unsigned int ydif = board_abs(turn.y2 - turn.y1);
+    unsigned int xdif = board_abs(turn.x2 - turn.x1);
     //Если пешка
     if (turn.figure == 'P') {
         // если ход на сруб
         if (turn.turn_type == 1) {
-            if ((board_abs(turn.y2 - turn.y1) == 1)
-                && (board_abs(turn.x2 - turn.x1) == 1)) {
+            if ((ydif == 1) && (xdif == 1)) {
                 board_chess_moving(board, turn);
                 return;
             }
             //Если ход не на сруб, то пешка идет по прямой
-        } else if (turn.x1 == turn.x2) {
+        } else if (xdif == 0) {
             //Если ход белых
             if (color_type == 0) {
                 if (turn.y1 == 1) {
@@ -203,8 +204,8 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         ERROR(sym, "Некорректное конечное поле");
     }
     if (turn.figure == 'K') {
-        if (board_abs(turn.x1 - turn.x2) <= 1) {
-            if (board_abs(turn.y1 - turn.y2) <= 1) {
+        if (xdif <= 1) {
+            if (ydif <= 1) {
                 board_chess_moving(board, turn);
                 return;
             }
