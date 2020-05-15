@@ -1,6 +1,8 @@
 #ifndef board_read_h
 #define board_read_h
+#include <stdio.h>
 //Ошибка
+int line, sym;
 #define ERROR(SYM, TEXT)                   \
     printf("%d:%d %s\n", line, SYM, TEXT); \
     return -1;
