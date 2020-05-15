@@ -7,13 +7,6 @@
 //Для ошибок
 int line = 1, sym = 0;
 
-//Изменение пололожения фигуры на доске
-void board_chess_moving(char board[8][8], board_turn turn)
-{
-    board[turn.y2][turn.x2] = board[turn.y1][turn.x1];
-    board[turn.y1][turn.x1] = ' ';
-}
-
 //Проверка наличия других фигур на пути
 int board_on_way_check(char board[8][8], board_turn turn)
 {

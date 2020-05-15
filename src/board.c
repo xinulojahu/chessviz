@@ -1,5 +1,12 @@
 #include "board.h"
 
+//Изменение пололожения фигуры на доске
+void board_chess_moving(char board[8][8], board_turn turn)
+{
+    board[turn.y2][turn.x2] = board[turn.y1][turn.x1];
+    board[turn.y1][turn.x1] = ' ';
+}
+
 //Модуль
 unsigned int board_abs(int d)
 {
