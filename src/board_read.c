@@ -1,28 +1,22 @@
+#include "board_read.h"
 #include "board_print_plain.h"
 #include "board_validation.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+//Ошибка
 #define ERROR(SYM, TEXT)                   \
     printf("%d:%d %s\n", line, SYM, TEXT); \
     exit(-1);
 
+//Следующий символ строки
 #define NEXT(C)  \
     C = *ptrstr; \
     ptrstr++;    \
     sym++;
 
+//Для ошибок
 int line = 1, sym = 0;
-
-typedef struct board_turn {
-    signed char x1;
-    signed char y1;
-    signed char x2;
-    signed char y2;
-    signed char turn_type;
-    signed char eg;
-    char figure;
-} board_turn;
 
 //Сделать из маленькой буквы заглавную
 char board_toupper(char c)
@@ -33,7 +27,7 @@ char board_toupper(char c)
     return c;
 }
 
-//
+//Проверка корректности введеного хода и конвертирование в структуру
 int board_check_turn(
         char board[8][8], board_turn* turn, char* string, int color_type)
 {
