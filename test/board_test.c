@@ -83,3 +83,39 @@ CTEST(syntax, all)
     int result = board_check_turn(board, &turn, "Pe2xe7e.p.#", 0);
     ASSERT_EQUAL(expected, result);
 }
+
+CTEST(P_movement, twospace)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "e2-e4", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(P_movement, onespace)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "e2-e3", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(P_movement, incorrect)
+{
+    int expected = -1;
+    board_check_turn(board, &turn, "e2-d3", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(P_movement, taking)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "e2-e6", 0);
+    board_chess_moving(board, turn);
+    board_check_turn(board, &turn, "e6xd7", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_init(board);
+    ASSERT_EQUAL(expected, result);
+}
+
