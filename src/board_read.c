@@ -120,7 +120,7 @@ char board_read_turn(char board[8][8], board_turn* turn, int color_type)
             ERROR(sym, "На указанном поле нет фигур соперника");
         }
     } else if (ischessman(board[turn->y2][turn->x2])) {
-        ERROR(sym, "На указаннам поле есть фигура соперника");
+        ERROR(sym, "На указаннам поле есть фигура");
     }
 
     //Проверка на взятие на проходе
@@ -175,8 +175,7 @@ int board_on_way_check(char board[8][8], board_turn turn)
     }
 
     for (int i = 1; i < dif; i++) {
-        printf("%d, %d", turn.x2 + xstep * i, turn.y2 + ystep * i);
-        if (ischessman(board[turn.y2 + ystep * i][turn.x2 + xstep * i])) {
+        if (ischessman(board[turn.y1 + ystep * i][turn.x1 + xstep * i])) {
             return 0;
         }
     }
@@ -240,8 +239,18 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             }
         }
     }
+    if (turn.figure == 'B') {
+        if (xdif == ydif) {
+            if (board_on_way_check(board, turn)) {
+                board_chess_moving(board, turn);
+                return;
+            } else {
+                ERROR(sym, "Слон не может ходить через фигуры.");
+            }
+        }
+    }
     //Если return не случился, значит некорректные данные
-    ERROR(sym, "Некорректное конечное поле");
+    ERROR(sym, "Некорректное конечное поле.");
 }
 void board_read(char board[8][8])
 {
