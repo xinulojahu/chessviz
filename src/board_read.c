@@ -32,7 +32,9 @@ char board_toupper(char c)
     }
     return c;
 }
-int board_read_turn(
+
+//
+int board_check_turn(
         char board[8][8], board_turn* turn, char* string, int color_type)
 {
     char c;
@@ -149,6 +151,7 @@ int board_read_turn(
     return 0;
 }
 
+//Модуль
 unsigned int board_abs(int d)
 {
     if (d < 0) {
@@ -157,12 +160,14 @@ unsigned int board_abs(int d)
     return d;
 }
 
+//Изменение пололожения фигуры на доске
 void board_chess_moving(char board[8][8], board_turn turn)
 {
     board[turn.y2][turn.x2] = board[turn.y1][turn.x1];
     board[turn.y1][turn.x1] = ' ';
 }
 
+//Проверка наличия других фигур на пути
 int board_on_way_check(char board[8][8], board_turn turn)
 {
     int xstep = turn.x2 - turn.x1;
@@ -185,6 +190,7 @@ int board_on_way_check(char board[8][8], board_turn turn)
     return 1;
 }
 
+//Логика передвижения шахман
 void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
 {
     unsigned int ydif = board_abs(turn.y2 - turn.y1);
@@ -278,17 +284,19 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     ERROR(sym, "Некорректное конечное поле.");
 }
 
+//Ввод хода
 int board_get_turn(char* string)
 {
     int i = 0;
     do {
         string[i++] = getchar();
-        printf("1 %c 1\n", string[i - 1]);
     } while ((string[i - 1] != ' ') && (string[i - 1] != '\n')
              && (string[i - 1] != '\0'));
     string[i] = '\0';
     return i;
 }
+
+//Функция ввода всех кодов в цикле
 int board_read(char board[8][8])
 {
     char string[12];
@@ -296,7 +304,7 @@ int board_read(char board[8][8])
     board_turn turn;
     do {
         stringlen = board_get_turn(string);
-        board_read_turn(board, &turn, string, 0);
+        board_check_turn(board, &turn, string, 0);
         board_chessman_logic(board, turn, 0);
         if (string[stringlen - 2] == '#') {
             return 0;
@@ -305,7 +313,7 @@ int board_read(char board[8][8])
             ERROR(sym, "Символ новой строки в некорректном месте.");
         }
         stringlen = board_get_turn(string);
-        board_read_turn(board, &turn, string, 1);
+        board_check_turn(board, &turn, string, 1);
         board_chessman_logic(board, turn, 1);
         if (string[stringlen - 2] == '#') {
             return 0;
