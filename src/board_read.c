@@ -1,4 +1,5 @@
 #include "board_read.h"
+#include "board.h"
 #include "board_print_plain.h"
 #include "board_validation.h"
 #include <stdio.h>
@@ -17,15 +18,6 @@
 
 //Для ошибок
 int line = 1, sym = 0;
-
-//Сделать из маленькой буквы заглавную
-char board_toupper(char c)
-{
-    if ((c >= 'a') && (c <= 'z')) {
-        c += 'A' - 'a';
-    }
-    return c;
-}
 
 //Проверка корректности введеного хода и конвертирование в структуру
 int board_check_turn(

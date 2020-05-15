@@ -1,4 +1,15 @@
+#include "board.h"
 
+//Сделать из маленькой буквы заглавную
+char board_toupper(char c)
+{
+    if ((c >= 'a') && (c <= 'z')) {
+        c += 'A' - 'a';
+    }
+    return c;
+}
+
+//Инициализировать доску
 void board_init(char board[8][8])
 {
     for (int j = 0; j <= 1; j++) {
