@@ -223,3 +223,31 @@ CTEST(N_movement, incorrect)
     ASSERT_EQUAL(expected, result);
 }
 
+CTEST(R_movement, correct1)
+{
+    int expected = 0;
+    board_init(board);
+    board_check_turn(board, &turn, "h2-h6", 0);
+    board_chess_moving(board, turn);
+    board_check_turn(board, &turn, "h1-h5", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_chess_moving(board, turn);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(R_movement, correct2)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "h5-a5", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_chess_moving(board, turn);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(R_movement, incorrect)
+{
+    int expected = -1;
+    board_check_turn(board, &turn, "a5-c3", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    ASSERT_EQUAL(expected, result);
+}
