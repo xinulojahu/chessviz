@@ -196,3 +196,30 @@ CTEST(B_movement, incorrect)
     int result = board_chessman_logic(board, turn, 0);
     ASSERT_EQUAL(expected, result);
 }
+
+CTEST(N_movement, correct1)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "g1-f3", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_chess_moving(board, turn);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(N_movement, correct2)
+{
+    int expected = 0;
+    board_check_turn(board, &turn, "f3-h4", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    board_chess_moving(board, turn);
+    ASSERT_EQUAL(expected, result);
+}
+
+CTEST(N_movement, incorrect)
+{
+    int expected = -1;
+    board_check_turn(board, &turn, "h4-f4", 0);
+    int result = board_chessman_logic(board, turn, 0);
+    ASSERT_EQUAL(expected, result);
+}
+
