@@ -1,4 +1,31 @@
+#include "board.h"
 
+//Изменение пололожения фигуры на доске
+void board_chess_moving(char board[8][8], board_turn turn)
+{
+    board[turn.y2][turn.x2] = board[turn.y1][turn.x1];
+    board[turn.y1][turn.x1] = ' ';
+}
+
+//Модуль
+unsigned int board_abs(int d)
+{
+    if (d < 0) {
+        return -d;
+    }
+    return d;
+}
+
+//Сделать из маленькой буквы заглавную
+char board_toupper(char c)
+{
+    if ((c >= 'a') && (c <= 'z')) {
+        c += 'A' - 'a';
+    }
+    return c;
+}
+
+//Инициализировать доску
 void board_init(char board[8][8])
 {
     for (int j = 0; j <= 1; j++) {
