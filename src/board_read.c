@@ -6,14 +6,6 @@
 
 //Для ошибок
 int line = 1, sym = 0;
-//Модуль
-unsigned int board_abs(int d)
-{
-    if (d < 0) {
-        return -d;
-    }
-    return d;
-}
 
 //Изменение пололожения фигуры на доске
 void board_chess_moving(char board[8][8], board_turn turn)

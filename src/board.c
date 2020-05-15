@@ -1,5 +1,14 @@
 #include "board.h"
 
+//Модуль
+unsigned int board_abs(int d)
+{
+    if (d < 0) {
+        return -d;
+    }
+    return d;
+}
+
 //Сделать из маленькой буквы заглавную
 char board_toupper(char c)
 {
