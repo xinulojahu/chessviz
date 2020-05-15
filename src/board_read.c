@@ -27,8 +27,13 @@ int board_read(char board[8][8])
     board_turn turn;
     do {
         stringlen = board_get_turn(string);
-        board_check_turn(board, &turn, string, 0);
-        board_chessman_logic(board, turn, 0);
+        if (board_check_turn(board, &turn, string, 0) == -1) {
+            return -1;
+        }
+
+        if (board_chessman_logic(board, turn, 0) == -1) {
+            return -1;
+        }
         if (string[stringlen - 2] == '#') {
             return 0;
         }
@@ -36,8 +41,12 @@ int board_read(char board[8][8])
             ERROR(sym, "Символ новой строки в некорректном месте.");
         }
         stringlen = board_get_turn(string);
-        board_check_turn(board, &turn, string, 1);
-        board_chessman_logic(board, turn, 1);
+        if (board_check_turn(board, &turn, string, 1) == -1) {
+            return -1;
+        }
+        if (board_chessman_logic(board, turn, 1) == -1) {
+            return -1;
+        }
         if (string[stringlen - 2] == '#') {
             return 0;
         }
