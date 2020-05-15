@@ -246,7 +246,10 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             }
         }
     }
+    //Если ладья
     if (turn.figure == 'R') {
+        //Т.к. Фигура не может оставться на месте, оба условия не могут
+        //выполниться
         if ((xdif == 0) || (ydif == 0)) {
             if (board_on_way_check(board, turn)) {
                 board_chess_moving(board, turn);
@@ -256,6 +259,18 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             }
         }
     }
+    //Если ферзь
+    if (turn.figure == 'Q') {
+        if ((xdif == 0) || (ydif == 0) || (xdif == ydif)) {
+            if (board_on_way_check(board, turn)) {
+                board_chess_moving(board, turn);
+                return;
+            } else {
+                ERROR(sym, "Ферзь не может ходить через фигуры.");
+            }
+        }
+    }
+
     //Если return не случился, значит некорректные данные
     ERROR(sym, "Некорректное конечное поле.");
 }
