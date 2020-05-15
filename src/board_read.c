@@ -198,11 +198,9 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         } else if (xdif == 0) {
             //Если ход белых
             if (color_type == 0) {
-                if (turn.y1 == 1) {
-                    if (turn.y2 == 3) {
-                        board_chess_moving(board, turn);
-                        return;
-                    }
+                if ((turn.y1 == 1) && (turn.y2 == 3)) {
+                    board_chess_moving(board, turn);
+                    return;
                 }
                 if (turn.y2 - turn.y1 == 1) {
                     board_chess_moving(board, turn);
@@ -210,11 +208,9 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
                 }
                 //Если ход черных
             } else {
-                if (turn.y1 == 6) {
-                    if (turn.y2 == 4) {
-                        board_chess_moving(board, turn);
-                        return;
-                    }
+                if ((turn.y1 == 6) && (turn.y2 == 4)) {
+                    board_chess_moving(board, turn);
+                    return;
                 }
                 if (turn.y2 - turn.y1 == -1) {
                     board_chess_moving(board, turn);
@@ -223,14 +219,14 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             }
         }
     }
+    //Если король
     if (turn.figure == 'K') {
-        if (xdif <= 1) {
-            if (ydif <= 1) {
-                board_chess_moving(board, turn);
-                return;
-            }
+        if ((xdif <= 1) && (ydif <= 1)) {
+            board_chess_moving(board, turn);
+            return;
         }
     }
+    //Если конь
     if (turn.figure == 'N') {
         if ((xdif == 1) || (xdif == 2)) {
             if (xdif + ydif == 3) {
@@ -239,6 +235,7 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             }
         }
     }
+    //Если слон
     if (turn.figure == 'B') {
         if (xdif == ydif) {
             if (board_on_way_check(board, turn)) {
