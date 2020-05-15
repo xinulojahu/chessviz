@@ -6,6 +6,8 @@
 int board_check_turn(
         char board[8][8], board_turn* turn, char* string, int color_type);
 
+int board_on_way_check(char board[8][8], board_turn turn);
+
 int isboardletter(char c);
 
 int isboarddigit(char c);

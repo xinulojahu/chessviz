@@ -2,6 +2,29 @@
 #include "board.h"
 #include "board_read.h"
 
+//Проверка наличия других фигур на пути
+int board_on_way_check(char board[8][8], board_turn turn)
+{
+    int xstep = turn.x2 - turn.x1;
+    int ystep = turn.y2 - turn.y1;
+    int dif;
+    if (xstep != 0) {
+        dif = board_abs(xstep);
+        xstep /= dif;
+    }
+    if (ystep != 0) {
+        dif = board_abs(ystep);
+        ystep /= dif;
+    }
+
+    for (int i = 1; i < dif; i++) {
+        if (ischessman(board[turn.y1 + ystep * i][turn.x1 + xstep * i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 //Проверка корректности введеного хода и конвертирование в структуру
 int board_check_turn(
         char board[8][8], board_turn* turn, char* string, int color_type)
