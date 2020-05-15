@@ -2,6 +2,100 @@
 #include "board.h"
 #include "board_read.h"
 
+//Логика передвижения шахман
+int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
+{
+    unsigned int ydif = board_abs(turn.y2 - turn.y1);
+    unsigned int xdif = board_abs(turn.x2 - turn.x1);
+    //Если пешка
+    if (turn.figure == 'P') {
+        // если ход на сруб
+        if (turn.turn_type == 1) {
+            if ((ydif == 1) && (xdif == 1)) {
+                board_chess_moving(board, turn);
+                return 0;
+            }
+            //Если ход не на сруб, то пешка идет по прямой
+        } else if (xdif == 0) {
+            //Если ход белых
+            if (color_type == 0) {
+                if ((turn.y1 == 1) && (turn.y2 == 3)) {
+                    board_chess_moving(board, turn);
+                    return 0;
+                }
+                if (turn.y2 - turn.y1 == 1) {
+                    board_chess_moving(board, turn);
+                    return 0;
+                }
+                //Если ход черных
+            } else {
+                if ((turn.y1 == 6) && (turn.y2 == 4)) {
+                    board_chess_moving(board, turn);
+                    return 0;
+                }
+                if (turn.y2 - turn.y1 == -1) {
+                    board_chess_moving(board, turn);
+                    return 0;
+                }
+            }
+        }
+    }
+    //Если король
+    if (turn.figure == 'K') {
+        if ((xdif <= 1) && (ydif <= 1)) {
+            board_chess_moving(board, turn);
+            return 0;
+        }
+    }
+    //Если конь
+    if (turn.figure == 'N') {
+        if ((xdif == 1) || (xdif == 2)) {
+            if (xdif + ydif == 3) {
+                board_chess_moving(board, turn);
+                return 0;
+            }
+        }
+    }
+    //Если слон
+    if (turn.figure == 'B') {
+        if (xdif == ydif) {
+            if (board_on_way_check(board, turn)) {
+                board_chess_moving(board, turn);
+                return 0;
+            } else {
+                ERROR(sym, "Слон не может ходить через фигуры.");
+            }
+        }
+    }
+    //Если ладья
+    if (turn.figure == 'R') {
+        //Т.к. Фигура не может оставться на месте, оба условия не могут
+        //выполниться
+        if ((xdif == 0) || (ydif == 0)) {
+            if (board_on_way_check(board, turn)) {
+                board_chess_moving(board, turn);
+                return 0;
+            } else {
+                ERROR(sym, "Ладья не может ходить через фигуры.");
+            }
+        }
+    }
+    //Если ферзь
+    if (turn.figure == 'Q') {
+        if ((xdif == 0) || (ydif == 0) || (xdif == ydif)) {
+            if (board_on_way_check(board, turn)) {
+                board_chess_moving(board, turn);
+                return 0;
+            } else {
+                ERROR(sym, "Ферзь не может ходить через фигуры.");
+            }
+        }
+    }
+
+    //Если return 0 не случился, значит некорректные данные
+    ERROR(sym, "Некорректное конечное поле.");
+}
+
 //Проверка наличия других фигур на пути
 int board_on_way_check(char board[8][8], board_turn turn)
 {

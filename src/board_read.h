@@ -12,6 +12,7 @@ int line, sym;
     C = *ptrstr; \
     ptrstr++;    \
     sym++;
+int board_get_turn(char* string);
 
 int board_read(char board[8][8]);
 
