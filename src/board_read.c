@@ -200,8 +200,6 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
                 }
             }
         }
-        //Если return не случился, значит некорректные данные
-        ERROR(sym, "Некорректное конечное поле");
     }
     if (turn.figure == 'K') {
         if (xdif <= 1) {
@@ -210,8 +208,17 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
                 return;
             }
         }
-        ERROR(sym, "Некорректное конечное поле");
     }
+    if (turn.figure == 'N') {
+        if ((xdif == 1) || (xdif == 2)) {
+            if (xdif + ydif == 3) {
+                board_chess_moving(board, turn);
+                return;
+            }
+        }
+    }
+    //Если return не случился, значит некорректные данные
+    ERROR(sym, "Некорректное конечное поле");
 }
 void board_read(char board[8][8])
 {
