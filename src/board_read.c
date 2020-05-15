@@ -166,7 +166,7 @@ int board_on_way_check(char board[8][8], board_turn turn)
 }
 
 //Логика передвижения шахман
-void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
+int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
 {
     unsigned int ydif = board_abs(turn.y2 - turn.y1);
     unsigned int xdif = board_abs(turn.x2 - turn.x1);
@@ -176,7 +176,7 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         if (turn.turn_type == 1) {
             if ((ydif == 1) && (xdif == 1)) {
                 board_chess_moving(board, turn);
-                return;
+                return 0;
             }
             //Если ход не на сруб, то пешка идет по прямой
         } else if (xdif == 0) {
@@ -184,21 +184,21 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             if (color_type == 0) {
                 if ((turn.y1 == 1) && (turn.y2 == 3)) {
                     board_chess_moving(board, turn);
-                    return;
+                    return 0;
                 }
                 if (turn.y2 - turn.y1 == 1) {
                     board_chess_moving(board, turn);
-                    return;
+                    return 0;
                 }
                 //Если ход черных
             } else {
                 if ((turn.y1 == 6) && (turn.y2 == 4)) {
                     board_chess_moving(board, turn);
-                    return;
+                    return 0;
                 }
                 if (turn.y2 - turn.y1 == -1) {
                     board_chess_moving(board, turn);
-                    return;
+                    return 0;
                 }
             }
         }
@@ -207,7 +207,7 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     if (turn.figure == 'K') {
         if ((xdif <= 1) && (ydif <= 1)) {
             board_chess_moving(board, turn);
-            return;
+            return 0;
         }
     }
     //Если конь
@@ -215,7 +215,7 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         if ((xdif == 1) || (xdif == 2)) {
             if (xdif + ydif == 3) {
                 board_chess_moving(board, turn);
-                return;
+                return 0;
             }
         }
     }
@@ -224,7 +224,7 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         if (xdif == ydif) {
             if (board_on_way_check(board, turn)) {
                 board_chess_moving(board, turn);
-                return;
+                return 0;
             } else {
                 ERROR(sym, "Слон не может ходить через фигуры.");
             }
@@ -237,7 +237,7 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         if ((xdif == 0) || (ydif == 0)) {
             if (board_on_way_check(board, turn)) {
                 board_chess_moving(board, turn);
-                return;
+                return 0;
             } else {
                 ERROR(sym, "Ладья не может ходить через фигуры.");
             }
@@ -248,14 +248,14 @@ void board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         if ((xdif == 0) || (ydif == 0) || (xdif == ydif)) {
             if (board_on_way_check(board, turn)) {
                 board_chess_moving(board, turn);
-                return;
+                return 0;
             } else {
                 ERROR(sym, "Ферзь не может ходить через фигуры.");
             }
         }
     }
 
-    //Если return не случился, значит некорректные данные
+    //Если return 0 не случился, значит некорректные данные
     ERROR(sym, "Некорректное конечное поле.");
 }
 

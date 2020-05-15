@@ -3,7 +3,7 @@
 //Ошибка
 #define ERROR(SYM, TEXT)                   \
     printf("%d:%d %s\n", line, SYM, TEXT); \
-    exit(-1);
+    return -1;
 
 //Следующий символ строки
 #define NEXT(C)  \
