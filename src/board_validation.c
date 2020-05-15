@@ -12,7 +12,6 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         // если ход на сруб
         if (turn.turn_type == 1) {
             if ((ydif == 1) && (xdif == 1)) {
-                board_chess_moving(board, turn);
                 return 0;
             }
             //Если ход не на сруб, то пешка идет по прямой
@@ -20,21 +19,17 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
             //Если ход белых
             if (color_type == 0) {
                 if ((turn.y1 == 1) && (turn.y2 == 3)) {
-                    board_chess_moving(board, turn);
                     return 0;
                 }
                 if (turn.y2 - turn.y1 == 1) {
-                    board_chess_moving(board, turn);
                     return 0;
                 }
                 //Если ход черных
             } else {
                 if ((turn.y1 == 6) && (turn.y2 == 4)) {
-                    board_chess_moving(board, turn);
                     return 0;
                 }
                 if (turn.y2 - turn.y1 == -1) {
-                    board_chess_moving(board, turn);
                     return 0;
                 }
             }
@@ -43,7 +38,6 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     //Если король
     if (turn.figure == 'K') {
         if ((xdif <= 1) && (ydif <= 1)) {
-            board_chess_moving(board, turn);
             return 0;
         }
     }
@@ -51,7 +45,6 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     if (turn.figure == 'N') {
         if ((xdif == 1) || (xdif == 2)) {
             if (xdif + ydif == 3) {
-                board_chess_moving(board, turn);
                 return 0;
             }
         }
@@ -60,7 +53,6 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     if (turn.figure == 'B') {
         if (xdif == ydif) {
             if (board_on_way_check(board, turn)) {
-                board_chess_moving(board, turn);
                 return 0;
             } else {
                 ERROR(sym, "Слон не может ходить через фигуры.");
@@ -73,7 +65,6 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
         //выполниться
         if ((xdif == 0) || (ydif == 0)) {
             if (board_on_way_check(board, turn)) {
-                board_chess_moving(board, turn);
                 return 0;
             } else {
                 ERROR(sym, "Ладья не может ходить через фигуры.");
@@ -84,7 +75,6 @@ int board_chessman_logic(char board[8][8], board_turn turn, int color_type)
     if (turn.figure == 'Q') {
         if ((xdif == 0) || (ydif == 0) || (xdif == ydif)) {
             if (board_on_way_check(board, turn)) {
-                board_chess_moving(board, turn);
                 return 0;
             } else {
                 ERROR(sym, "Ферзь не может ходить через фигуры.");

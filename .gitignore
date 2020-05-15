@@ -1,2 +1,4 @@
-builder/*.o
+builder/src/*.o
+builder/test/*.o
 bin/chessviz
+bin/chesstest

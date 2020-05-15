@@ -34,6 +34,7 @@ int board_read(char board[8][8])
         if (board_chessman_logic(board, turn, 0) == -1) {
             return -1;
         }
+        board_chess_moving(board, turn);
         if (string[stringlen - 2] == '#') {
             return 0;
         }
@@ -47,6 +48,7 @@ int board_read(char board[8][8])
         if (board_chessman_logic(board, turn, 1) == -1) {
             return -1;
         }
+        board_chess_moving(board, turn);
         if (string[stringlen - 2] == '#') {
             return 0;
         }
